@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/nayanthara-naked-deepfake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/nayanthara-naked-erotic-beach.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Nayanthara%2BSolo%2BXMAS%2BGift%2Bvirtual%2Bfull%2Bvideo%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Nayanthara%2Bgoes%2Bto%2Bmassage%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nayanthara-bikini-bj-without-condom.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nayanthara-in-doggy-pose-fucked-hard-ai-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nayanthara-toe-sucking-deepfake-doggy-fuck-1.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nayanthara-toe-sucking-deepfake-doggy-fuck.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nude-south-actress-nayanthara.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nayanthara-casting-couch-butt-hole.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nayanthara-dress-removed-big-boobs-press.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nayanthara-spreading-leg-pussy-fucking-vr-pov.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nayanthara-car-sex-ass-licking-blowjob-video.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nayanthara-massage-mouth-fuck-doggy-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nayanthara-mouth-fucked-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nayanthara-stripped-spreading-leg-pussy.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nayanthara-topless-dance-practice.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nayanthara-juicy-boobs-topless-bj.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nayanthara-licking-producer-ass-hole-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nayanthara-pink-blouse-handjob-nude.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nayanthara-sexy-mom-fuck-young-man.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nayanthara-shirt-removed-open-white-bra.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/Nayanthara%20naked%20car%20sex%20deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/nayanthara-nude-bedroom-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/nayanthara-deepfake-nude-casting.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/nayanthara-private-pussy-masturbating-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/nayanthara-sucking-fucking-white-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/nayanthara-standing-sex-fucked-from-back.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/Nayanthara%20nude%20Actress%20Naked%20Ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/naked-nayanthara-fucking-round-ass-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-big-boobs-massaging-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-fishnet-dress-fucking-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-handjob-fucked-porn-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-leaked-sex-tape-hot-black-dress.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-mookuthi-amman-special-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-morning-pussy-drill-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-removing-panty-playing-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/nayanthara-va-entha-maari-okkanum-actress.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/sexy-nayanthara-birthday-special-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/sexy-nayanthara-naked-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/south-actress-nayanthara-doggy-style-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/tamil-actress-nayanthara-blowjob-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/tamil-actress-nayanthara-hardcore-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/tamil-actress-nayanthara-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/nayanthara-hardcore-naked-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nayanthara-naked-spreading-her-legs.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nayanthara-nude-blacked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nayanthara-nude-pussy-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nayanthara-renoved-her-clothes-goes-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nude-nayanthara-masturbating-her-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/big-boobs-nayanthara-naked-riding-on-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/nayanthara-sucking-cock-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/horny-nayanthara-naked-in-car-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/nayanthara-big-boobs-nude-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/nayanthara-boobs-pressed-blowjob-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/nayanthara-naked-fucked-in-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/nayanthara-pussy-licking-doggy-style-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/horny-nayanthara-nude-fucked-in-doggy-pose.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/nayanthara-ass-fucked-doggy-style-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/nayanthara-horny-doggy-pose-hard-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/nayanthara-in-doggy-pose-fucked-hard-ai-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/pov-nayanthara-handjob-big-dick-holding.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-big-boobs-playing-with-dildo.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-in-fishnet-dress-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-nude-sucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-posing-big-boobs-playing-sex-toy.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-striptease-nude-ass-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-taking-cum-giving-hot-boob-job.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nayanthara-topless-big-boobs-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/keerthy-suresh-nayanthara-threesome-bedroom-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nayanthara-cock-sucking-deepfake-doggy-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nayanthara-in-blue-panties-pressing-boobs-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nayanthara-sucking-big-cock-like-a-whore-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nayanthara-xxx-nude-dick-sucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nayanthara-big-boobs-giving-hot-boobsjob-ai-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nayanthara-naked-threesome-anal-sex-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nayanthara-xxx-big-boobs-in-bikini-live-on-cam.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nayanthara-xxx-nude-ass-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/nayanthara-live-vc-low-neck-cleavage.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/nayanthara-nude-bathroom-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/nayanthara-sexy-wife-striptease-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/big-boobs-nayanthara-spreading-leg.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-anal-sex-deepfake-nude-cock.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-big-boobs-bouncing-naked-oil.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-black-bikini-threesome-handjob.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-live-vc-low-neck-cleavage.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-naked-bi-sexual-shaved-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-naked-round-ass-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-nude-ass-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-spreading-leg-shaved-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nayanthara-workout-sex-deepfake-hot.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/shemale-nayanthara-naked-handjob.mp4",
+"https://cdn.pornkeen.net/2022/12/14/nayanthara-naked-deepfake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/nayanthara-naked-erotic-beach.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Nayanthara%2BSolo%2BXMAS%2BGift%2Bvirtual%2Bfull%2Bvideo%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Nayanthara%2Bgoes%2Bto%2Bmassage%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nayanthara-bikini-bj-without-condom.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nayanthara-in-doggy-pose-fucked-hard-ai-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nayanthara-toe-sucking-deepfake-doggy-fuck-1.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nayanthara-toe-sucking-deepfake-doggy-fuck.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nude-south-actress-nayanthara.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nayanthara-casting-couch-butt-hole.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nayanthara-dress-removed-big-boobs-press.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nayanthara-spreading-leg-pussy-fucking-vr-pov.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nayanthara-car-sex-ass-licking-blowjob-video.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nayanthara-massage-mouth-fuck-doggy-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nayanthara-mouth-fucked-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nayanthara-stripped-spreading-leg-pussy.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nayanthara-topless-dance-practice.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nayanthara-juicy-boobs-topless-bj.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nayanthara-licking-producer-ass-hole-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nayanthara-pink-blouse-handjob-nude.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nayanthara-sexy-mom-fuck-young-man.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nayanthara-shirt-removed-open-white-bra.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

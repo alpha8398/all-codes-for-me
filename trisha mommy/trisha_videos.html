@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/deepfake-porn-trisha-krishnan-nude.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Fake%2Btrisha%2Bwife%2Bhaving%2Bgood%2Btime%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Trisha%2BKrishnan%2BBlowjob.%2BPromo%2Bfor%2Ba%2Bfull%2Bvideo.%2BModel%2Bon%2Bprocess%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Trisha%2Bfake%2Benjoyment%2Bin%2Bbed%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/trisha-krishnan-fake-celebrity-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/trisha-krishnan-nude-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/trisha-krishnan-showing-off-her-full-breasts.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-bathroom-naked-shower-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-big-boobs-pressed-mouth.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-force-dress-removed-bold.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-saloon-girl-white-shirt.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-small-boobs-pressed-round.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-tied-naked-dildo-torture.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-blouse-pressed-blowjob-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-facesitting-mouth-fucked-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-handjob-with-bra-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-krishnan-bikini-nipple-cream.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-krishnan-handjob-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-naked-bj-ass-hole-fingering.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/trisha-topless-blowjob-naked-bedroom.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/trisha-krishnan-remove-white-bra-toples.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/trisha-sexy-tamil-heroine-private.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-full-nude-pregnant-tamil-actress.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-krishnan-naked-bathtub-tamil-heroine.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-phone-sex-big-boobs-pressed-pussy-licking.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-seduce-live-photoshoot-small-boobs.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-sexy-tamil-heroine-private-ganabang.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/trisha-spreading-leg-pussy-finger-red-stockings-video.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/actress-trisha-private-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/trisha-krishnan-nude-massage-sex-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/trisha-krishnan-pussy-hole-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/trisha-krishnan-seducing-xxx.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/trisha-krishnan-hot-blowjob-nude-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/trisha-krishnan-naked-massage-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/trisha-krishnan-nude-boobs-sexy-body.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/trisha-krishnan-naked-small-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/trisha-krishnan-nude-doggy-style-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/trisha-blowjob-naked-riding-on-dick-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/naked-trisha-krishnan-deepfake-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/actress-trisha-sex-deepfake-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/trisha-krishnan-private-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/Trisha%20Krishnan%20seducing%20xxx%20saree%20deepfak.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/soumitrisha-kundu-nude-pussy-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/trisha-krishnan-seducing-saree-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/trisha-krishnan-seducing-xxx-saree.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/trisha-sex-deepfake-video-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/trisha-krishnan-hot-sexy-ass-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/trisha-krishnan-playing-with-dildo.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/naked-trisha-krishnan-fucking-in-black-lingerie.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-big-boobs-pussy-licking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-boobs-cumshot-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-nude-photoshoot-pussy-licking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-nude-sucking-cock-like-a-whore-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-pussy-fingering-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/trisha-krishnan-xxx-fucked-in-cowgirl-position.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/big-boobs-trisha-krishnan-teasing-showing-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/trisha-krishnan-pov-playing-with-sexy-toy.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/trisha-krishnan-nude-on-bed-foot-job-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/trisha-krishnan-pussy-fingering-fucked-on-table.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/trisha-krishnan-pussy-spreading-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/trisha-krishnan-enjoying-black-dick-sucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/trisha-krishnan-nude-ass-fucked-pussy-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/trisha-krishnan-spreading-leg-rope-tied-bondage.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/trisha-krishnan-naked-lesbian-pussy-licking.mp4",
+"https://cdn.pornkeen.net/2022/12/14/deepfake-porn-trisha-krishnan-nude.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Fake%2Btrisha%2Bwife%2Bhaving%2Bgood%2Btime%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Trisha%2BKrishnan%2BBlowjob.%2BPromo%2Bfor%2Ba%2Bfull%2Bvideo.%2BModel%2Bon%2Bprocess%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Trisha%2Bfake%2Benjoyment%2Bin%2Bbed%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/trisha-krishnan-fake-celebrity-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/trisha-krishnan-nude-fake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/trisha-krishnan-showing-off-her-full-breasts.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-bathroom-naked-shower-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-big-boobs-pressed-mouth.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-force-dress-removed-bold.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-saloon-girl-white-shirt.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-small-boobs-pressed-round.mp4",
+"https://cdn.pornkeen.net/2022/12/19/trisha-krishnan-tied-naked-dildo-torture.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-blouse-pressed-blowjob-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-facesitting-mouth-fucked-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-handjob-with-bra-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-krishnan-bikini-nipple-cream.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-krishnan-handjob-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-naked-bj-ass-hole-fingering.mp4",
+"https://cdn.pornkeen.net/2022/12/20/trisha-topless-blowjob-naked-bedroom.mp4",
+"https://cdn.pornkeen.net/2022/12/21/trisha-krishnan-remove-white-bra-toples.mp4",
+"https://cdn.pornkeen.net/2022/12/21/trisha-sexy-tamil-heroine-private.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-full-nude-pregnant-tamil-actress.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-krishnan-naked-bathtub-tamil-heroine.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-phone-sex-big-boobs-pressed-pussy-licking.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-seduce-live-photoshoot-small-boobs.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-sexy-tamil-heroine-private-ganabang.mp4",
+"https://cdn.pornkeen.net/2022/12/22/trisha-spreading-leg-pussy-finger-red-stockings-video.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>
