@@ -1,0 +1,11 @@
+first image open
+layers -> right click duplicate
+filter -> enchance -> high pass
+std dev -> 30 contrast -> 1.0
+filters -> oilify -> radius -> 8 exponent -> 9 intensites -> 128 
+colours -> exposure or brightness-contrast
+filters -> distorts -> embross
+Set this layer mode to Overlay or Soft Light and reduce Opacity as needed.
+Add Filters → Enhance → Unsharp Mask (Amount: ~2.0, Radius: ~30).
+
+Stack Oilify and High Pass layers for a hyper-sharp + painted hybrid.
