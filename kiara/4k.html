@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Instant Image Slider</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #fff;
+    text-align: center;
+    margin: 40px;
+  }
+  #container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto 20px;
+    background: #eee;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  #container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    display: none; /* hide all images by default */
+  }
+  #container img.active {
+    display: block; /* show only active image instantly */
+    z-index: 2;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 15px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h2>Instant Image Slider</h2>
+
+<div id="container">
+  <!-- Images inserted by JS -->
+</div>
+
+<div>
+  <button id="prev">Previous</button>
+  <button id="next">Next</button>
+</div>
+
+<script>
+  const images = [
+    "https://i.ibb.co/jPkQFqJb/output-0001.png",
+    "https://i.ibb.co/BH0x572s/output-0002.png",
+    "https://i.ibb.co/kssjn3fm/output-0003.png",
+    "https://i.ibb.co/yJPvVmH/output-0004.png",
+    "https://i.ibb.co/yBnrGWZp/output-0005.png",
+    "https://i.ibb.co/JwJNNMWJ/output-0006.png",
+    "https://i.ibb.co/GQ8dygXn/output-0007.png",
+    "https://i.ibb.co/7dTLrVYC/output-0008.png",
+    "https://i.ibb.co/PZtxFvqC/output-0009.png",
+    "https://i.ibb.co/vxjtpbdN/output-0010.png",
+    "https://i.ibb.co/dwM1bZkb/output-0011.png",
+    "https://i.ibb.co/tTjGLxKq/output-0012.png",
+    "https://i.ibb.co/DDGSqVxb/output-0013.png",
+    "https://i.ibb.co/ZzNCFt4t/output-0014.png",
+    "https://i.ibb.co/VWT2VDxB/output-0015.png",
+    "https://i.ibb.co/tP1V6q0D/output-0016.png",
+    "https://i.ibb.co/NgyBzWGP/output-0017.png",
+    "https://i.ibb.co/RTVvqKJx/output-0018.png",
+    "https://i.ibb.co/Y4qXDLMz/output-0019.png",
+    "https://i.ibb.co/fR9rg3S/output-0020.png",
+    "https://i.ibb.co/1ffYxf8W/output-0021.png",
+    "https://i.ibb.co/ZRHmPxWF/output-0022.png",
+    "https://i.ibb.co/KcjGPdpC/output-0023.png",
+    "https://i.ibb.co/TqHLXvWd/output-0024.png",
+    "https://i.ibb.co/sX7dDYL/output-0025.png",
+    "https://i.ibb.co/4wcZNDgG/output-0026.png",
+    "https://i.ibb.co/vC2Z9Tcy/output-0027.png",
+    "https://i.ibb.co/rGDztM0T/output-0028.png",
+    "https://i.ibb.co/Q75Cks45/output-0029.png",
+    "https://i.ibb.co/N2zYpV8n/output-0030.png",
+    "https://i.ibb.co/pvCpvcBX/output-0031.png",
+    "https://i.ibb.co/3y1Vd4hJ/output-0032.png",
+    "https://i.ibb.co/HL3CShSD/output-0033.png",
+    "https://i.ibb.co/LDSPQ5HY/output-0034.png",
+    "https://i.ibb.co/chfvLYDh/output-0035.png",
+    "https://i.ibb.co/1YhYGXy8/output-0036.png",
+    "https://i.ibb.co/W4CFvGGT/output-0037.png",
+    "https://i.ibb.co/Vpg0TVjF/output-0038.png",
+    "https://i.ibb.co/7NTKxbsD/output-0039.png",
+    "https://i.ibb.co/CK9xGwHP/output-0040.png",
+    "https://i.ibb.co/jknDVSHx/output-0041.png",
+    "https://i.ibb.co/672gLWZk/output-0042.png",
+    "https://i.ibb.co/23v7s78C/output-0043.png",
+    "https://i.ibb.co/ymyMByP9/output-0044.png"
+  ];
+
+  const container = document.getElementById('container');
+  let currentIndex = 0;
+
+  images.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    if (i === 0) img.classList.add('active');
+    container.appendChild(img);
+  });
+
+  const imgs = container.querySelectorAll('img');
+
+  function showImage(index) {
+    if (index < 0) index = images.length -1;
+    if (index >= images.length) index = 0;
+    imgs.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+    });
+    currentIndex = index;
+  }
+
+  document.getElementById('next').addEventListener('click', () => {
+    showImage(currentIndex + 1);
+  });
+
+  document.getElementById('prev').addEventListener('click', () => {
+    showImage(currentIndex - 1);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      showImage(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      showImage(currentIndex - 1);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Instant Image Slider</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #fff;
+    text-align: center;
+    margin: 40px;
+  }
+  #container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto 20px;
+    background: #eee;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  #container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    display: none; /* hide all images by default */
+  }
+  #container img.active {
+    display: block; /* show only active image instantly */
+    z-index: 2;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 15px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h2>Instant Image Slider</h2>
+
+<div id="container">
+  <!-- Images inserted by JS -->
+</div>
+
+<div>
+  <button id="prev">Previous</button>
+  <button id="next">Next</button>
+</div>
+
+<script>
+  const images = [
+      "https://i.ibb.co/MxDd2S2z/output-0002.png",
+      "https://i.ibb.co/N20N0nYd/output-0003.png",
+      "https://i.ibb.co/wZBsWTJm/output-0004.png",
+      "https://i.ibb.co/Z6PkB9Tn/output-0005.png",
+      "https://i.ibb.co/XG6Jmx7/output-0006.png",
+      "https://i.ibb.co/4gSm1GDD/output-0007.png",
+      "https://i.ibb.co/HvDdHXL/output-0008.png",
+      "https://i.ibb.co/qFD20kbv/output-0009.png",
+      "https://i.ibb.co/ynQhxjCT/output-0010.png",
+      "https://i.ibb.co/zhJQWg9D/output-0011.png",
+      "https://i.ibb.co/MxcNyBRN/output-0012.png",
+      "https://i.ibb.co/MkgyDRnz/output-0013.png",
+      "https://i.ibb.co/vxjbXrQr/output-0014.png",
+      "https://i.ibb.co/xqm51JVv/output-0015.png",
+      "https://i.ibb.co/fz1VB4KX/output-0016.png",
+      "https://i.ibb.co/FLGrf3xP/output-0017.png",
+      "https://i.ibb.co/3Y5rvbx7/output-0018.png",
+      "https://i.ibb.co/j958csxw/output-0019.png",
+      "https://i.ibb.co/D6nVtw8/output-0020.png",
+      "https://i.ibb.co/MyrTVH6s/output-0021.png",
+      "https://i.ibb.co/dwfnjCsh/output-0022.png",
+      "https://i.ibb.co/8LTKzXMQ/output-0023.png",
+      "https://i.ibb.co/MDM9vHzF/output-0024.png",
+      "https://i.ibb.co/zTL6pGYJ/output-0025.png",
+      "https://i.ibb.co/4Z19V1k5/output-0026.png",
+      "https://i.ibb.co/4RXttJrh/output-0027.png",
+      "https://i.ibb.co/qLGpTwhg/output-0028.png",
+      "https://i.ibb.co/395J1mr6/output-0029.png",
+      "https://i.ibb.co/N6pkXjpg/output-0030.png",
+      "https://i.ibb.co/3y8JFgJ7/output-0031.png",
+      "https://i.ibb.co/MyGz2wyj/output-0032.png",
+      "https://i.ibb.co/pjcnkV1R/output-0033.png",
+      "https://i.ibb.co/Q3CFH9t6/output-0034.png",
+      "https://i.ibb.co/Gffx3Rmn/output-0035.png"
+  ];
+
+  const container = document.getElementById('container');
+  let currentIndex = 0;
+
+  images.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    if (i === 0) img.classList.add('active');
+    container.appendChild(img);
+  });
+
+  const imgs = container.querySelectorAll('img');
+
+  function showImage(index) {
+    if (index < 0) index = images.length -1;
+    if (index >= images.length) index = 0;
+    imgs.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+    });
+    currentIndex = index;
+  }
+
+  document.getElementById('next').addEventListener('click', () => {
+    showImage(currentIndex + 1);
+  });
+
+  document.getElementById('prev').addEventListener('click', () => {
+    showImage(currentIndex - 1);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      showImage(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      showImage(currentIndex - 1);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Instant Image Slider</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #fff;
+    text-align: center;
+    margin: 40px;
+  }
+  #container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto 20px;
+    background: #eee;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  #container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    display: none; /* hide all images by default */
+  }
+  #container img.active {
+    display: block; /* show only active image instantly */
+    z-index: 2;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 15px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h2>Instant Image Slider</h2>
+
+<div id="container">
+  <!-- Images inserted by JS -->
+</div>
+
+<div>
+  <button id="prev">Previous</button>
+  <button id="next">Next</button>
+</div>
+
+<script>
+  const images = [
+"https://i.ibb.co/b5zL1mdg/output-0001.png",
+"https://i.ibb.co/HpzHDFJT/output-0002.png",
+"https://i.ibb.co/fVGDb6dM/output-0003.png",
+"https://i.ibb.co/23KGGHq1/output-0004.png",
+"https://i.ibb.co/m55djwSN/output-0005.png",
+"https://i.ibb.co/pB8GJ1nC/output-0006.png",
+"https://i.ibb.co/gbwP2jR3/output-0007.png",
+"https://i.ibb.co/ccbyn7qZ/output-0008.png",
+"https://i.ibb.co/8gPkQwVX/output-0009.png",
+"https://i.ibb.co/4RMJmSXD/output-0010.png",
+"https://i.ibb.co/mr8jCnrz/output-0011.png",
+"https://i.ibb.co/QvZGfhFX/output-0012.png",
+"https://i.ibb.co/Kjs56K0M/output-0013.png",
+"https://i.ibb.co/nMfDNPSG/output-0014.png",
+"https://i.ibb.co/Dg70D7d4/output-0015.png",
+"https://i.ibb.co/Zzmt8Rnt/output-0016.png",
+"https://i.ibb.co/VcqBTYLQ/output-0017.png",
+"https://i.ibb.co/m5bDLSnt/output-0018.png",
+"https://i.ibb.co/Q3zgPncb/output-0019.png",
+"https://i.ibb.co/762CRz3/output-0020.png",
+"https://i.ibb.co/MyJP42F0/output-0021.png",
+"https://i.ibb.co/G3bH9R04/output-0022.png",
+"https://i.ibb.co/Jw9cyyT5/output-0023.png",
+"https://i.ibb.co/nMrrhzyT/output-0024.png",
+"https://i.ibb.co/4RLz22Rv/output-0025.png",
+"https://i.ibb.co/Z1z84sb1/output-0026.png",
+"https://i.ibb.co/zjLvpRp/output-0027.png",
+"https://i.ibb.co/zH4QwN7d/output-0028.png",
+"https://i.ibb.co/wZGt06D3/output-0029.png",
+"https://i.ibb.co/ymJ1n0kr/output-0030.png",
+"https://i.ibb.co/ynzwhd0K/output-0031.png",
+"https://i.ibb.co/bj6tKvMC/output-0032.png",
+"https://i.ibb.co/jPM1bkpp/output-0033.png",
+"https://i.ibb.co/9mCqT8SK/output-0034.png",
+"https://i.ibb.co/rGhk4Mpn/output-0035.png",
+"https://i.ibb.co/TxcqWW1c/output-0036.png",
+"https://i.ibb.co/9HH3vszS/output-0037.png",
+"https://i.ibb.co/S7cSP6dK/output-0038.png",
+"https://i.ibb.co/VczPT4y3/output-0039.png",
+"https://i.ibb.co/xtrz7Ycw/output-0040.png",
+"https://i.ibb.co/hF5kYcnF/output-0041.png",
+"https://i.ibb.co/fYpKSY91/output-0042.png",
+"https://i.ibb.co/TMxCFJgk/output-0043.png",
+"https://i.ibb.co/F42jWf8g/output-0044.png",
+"https://i.ibb.co/LhtPv6q3/output-0045.png",
+"https://i.ibb.co/zHDhLmN6/output-0046.png",
+"https://i.ibb.co/pkh3mL5/output-0047.png",
+"https://i.ibb.co/SY75xFb/output-0048.png",
+"https://i.ibb.co/3yTMnjM9/output-0049.png",
+"https://i.ibb.co/8LJj2K7Q/output-0050.png",
+"https://i.ibb.co/gMgrkv4K/output-0051.png",
+"https://i.ibb.co/YFjMPCPB/output-0052.png",
+"https://i.ibb.co/hxPPZFJ0/output-0053.png",
+"https://i.ibb.co/WNXZR728/output-0054.png",
+"https://i.ibb.co/LdLCLQLd/output-0055.png",
+"https://i.ibb.co/Mk78xMMn/output-0056.png",
+"https://i.ibb.co/8nvMBxN6/output-0057.png",
+"https://i.ibb.co/Qvd0zJXN/output-0058.png",
+"https://i.ibb.co/DHZPgB0Y/output-0059.png",
+"https://i.ibb.co/SDybbVPD/output-0060.png",
+"https://i.ibb.co/vCsj0TQ3/output-0061.png",
+"https://i.ibb.co/84bMQ41y/output-0062.png",
+"https://i.ibb.co/3ymXG1FD/output-0063.png",
+"https://i.ibb.co/JFrVJyJK/output-0064.png",
+"https://i.ibb.co/gbWBkDDd/output-0065.png",
+"https://i.ibb.co/0y57ryRv/output-0066.png",
+"https://i.ibb.co/tw5rCKwq/output-0067.png",
+"https://i.ibb.co/KxftDzj7/output-0068.png",
+"https://i.ibb.co/sn873qM/output-0069.png",
+"https://i.ibb.co/B2xrTmR7/output-0070.png",
+"https://i.ibb.co/6cC83ZLY/output-0071.png",
+"https://i.ibb.co/Z1B1N17C/output-0072.png",
+"https://i.ibb.co/0RMLJrDZ/output-0073.png",
+"https://i.ibb.co/N08J5ZL/output-0074.png",
+"https://i.ibb.co/8gPd2twk/output-0075.png",
+"https://i.ibb.co/5W5cCgF7/output-0076.png",
+"https://i.ibb.co/HpqN37Pq/output-0077.png",
+"https://i.ibb.co/dsFq0rRw/output-0078.png",
+"https://i.ibb.co/JW3NfcC9/output-0079.png",
+"https://i.ibb.co/mV6VGzQj/output-0080.png",
+"https://i.ibb.co/YFpLPkKR/output-0081.png",
+"https://i.ibb.co/Zz3ZhmYp/output-0082.png",
+"https://i.ibb.co/GQn8DQk3/output-0083.png",
+"https://i.ibb.co/PZn7Dvkw/output-0084.png",
+"https://i.ibb.co/qLsXzbnQ/output-0085.png",
+"https://i.ibb.co/27fhrCgw/output-0086.png",
+"https://i.ibb.co/fY2zV65c/output-0087.png",
+"https://i.ibb.co/Y4wY1ZJK/output-0088.png",
+"https://i.ibb.co/GQVnDPbc/output-0089.png",
+"https://i.ibb.co/ks65d8DV/output-0090.png",
+"https://i.ibb.co/Y4yRh8sQ/output-0091.png",
+"https://i.ibb.co/Vpq01Yc9/output-0092.png",
+"https://i.ibb.co/vvdN7gzg/output-0093.png",
+"https://i.ibb.co/9HW798rw/output-0094.png",
+"https://i.ibb.co/q3NhcCfH/output-0096.png",
+"https://i.ibb.co/cS9Lj6S7/output-0095.png",
+"https://i.ibb.co/PvznYzBJ/output-0098.png",
+"https://i.ibb.co/dJtdXPwV/output-0097.png",
+"https://i.ibb.co/rGFQk92d/output-0099.png",
+"https://i.ibb.co/vvCZPn9J/output-0100.png",
+"https://i.ibb.co/Nn794qzg/output-0101.png",
+"https://i.ibb.co/Vpq1xrJv/output-0102.png",
+"https://i.ibb.co/v6RMJJJP/output-0103.png",
+"https://i.ibb.co/hJQfFn2r/output-0104.png",
+"https://i.ibb.co/BHCS00xt/output-0105.png",
+"https://i.ibb.co/bRs22vCP/output-0106.png",
+"https://i.ibb.co/DPh2K277/output-0107.png",
+"https://i.ibb.co/NgXMNLRH/output-0108.png",
+"https://i.ibb.co/r2RSMsqp/output-0109.png",
+"https://i.ibb.co/wrB2RYnL/output-0110.png",
+"https://i.ibb.co/tyc6TRn/output-0111.png",
+"https://i.ibb.co/fWCfKrc/output-0112.png",
+"https://i.ibb.co/Txx1tZ2M/output-0113.png",
+"https://i.ibb.co/0RyQQ9RC/output-0114.png",
+"https://i.ibb.co/Gf23YpkY/output-0115.png",
+"https://i.ibb.co/SwFhpn99/output-0116.png",
+"https://i.ibb.co/23LNSzFM/output-0117.png",
+"https://i.ibb.co/1f2X3CKx/output-0118.png",
+"https://i.ibb.co/8DzkZPPC/output-0119.png",
+"https://i.ibb.co/tpX7VL50/output-0120.png",
+"https://i.ibb.co/p6qNRBWV/output-0121.png",
+"https://i.ibb.co/7cn5HYm/output-0122.png",
+"https://i.ibb.co/BK4DDNp6/output-0123.png",
+"https://i.ibb.co/S43g07w4/output-0124.png",
+"https://i.ibb.co/DDsxd0fs/output-0125.png",
+"https://i.ibb.co/sdQ2B6jz/output-0126.png",
+"https://i.ibb.co/wrxBGRgz/output-0127.png",
+"https://i.ibb.co/JjRszfy1/output-0128.png",
+"https://i.ibb.co/Wv8VtpWt/output-0129.png",
+"https://i.ibb.co/HpnRW3ym/output-0130.png",
+"https://i.ibb.co/7NkLVbRc/output-0131.png",
+"https://i.ibb.co/Rks43c9R/output-0132.png",
+"https://i.ibb.co/6c5KmrP0/output-0133.png",
+"https://i.ibb.co/zWTbCLPL/output-0134.png",
+"https://i.ibb.co/JR97Y2p4/output-0135.png",
+"https://i.ibb.co/mFrSWbPW/output-0136.png",
+"https://i.ibb.co/TqqBjSrx/output-0137.png",
+"https://i.ibb.co/ccxmPK2R/output-0139.png",
+"https://i.ibb.co/ds4yjsy0/output-0138.png",
+"https://i.ibb.co/zWWGn4cn/output-0140.png",
+"https://i.ibb.co/B2D8YrYP/output-0141.png",
+"https://i.ibb.co/8DshvRW2/output-0142.png",
+"https://i.ibb.co/7tQXS2WK/output-0143.png",
+"https://i.ibb.co/ch1htNLn/output-0144.png",
+"https://i.ibb.co/3YctWXZv/output-0145.png",
+"https://i.ibb.co/n8mfYHn4/output-0146.png",
+"https://i.ibb.co/PGNYg6DD/output-0147.png",
+"https://i.ibb.co/ymB911YJ/output-0149.png",
+"https://i.ibb.co/1thxXvmh/output-0148.png",
+"https://i.ibb.co/jkqBDd66/output-0150.png",
+"https://i.ibb.co/CZngdyp/output-0151.png",
+"https://i.ibb.co/prX25y71/output-0152.png",
+"https://i.ibb.co/Mxmnp5qp/output-0153.png",
+"https://i.ibb.co/0VnHyNzj/output-0154.png",
+"https://i.ibb.co/LDRGnsR1/output-0155.png",
+"https://i.ibb.co/tMr2gKd1/output-0156.png",
+"https://i.ibb.co/V0MwpG89/output-0157.png",
+"https://i.ibb.co/xxJzhT5/output-0158.png",
+"https://i.ibb.co/p67NRz97/output-0159.png",
+"https://i.ibb.co/prQxC2sZ/output-0160.png",
+"https://i.ibb.co/5XtYL4XM/output-0161.png",
+"https://i.ibb.co/B5YQv21m/output-0162.png",
+"https://i.ibb.co/SXDpFdxy/output-0163.png",
+"https://i.ibb.co/9kT6wdgY/output-0164.png",
+"https://i.ibb.co/Hf7tpWcm/output-0165.png",
+"https://i.ibb.co/Pv8YBkgJ/output-0166.png",
+"https://i.ibb.co/67wkfVyY/output-0168.png",
+"https://i.ibb.co/cczsSvyd/output-0167.png",
+"https://i.ibb.co/HLH1jMtP/output-0170.png",
+"https://i.ibb.co/8DsswV3K/output-0169.png",
+"https://i.ibb.co/k2JmB5ks/output-0171.png",
+"https://i.ibb.co/QvKjKRXX/output-0172.png",
+"https://i.ibb.co/twyMsMzD/output-0174.png",
+"https://i.ibb.co/NdTJztjN/output-0173.png",
+"https://i.ibb.co/TG2JT9J/output-0175.png",
+"https://i.ibb.co/N2fnrSmg/output-0176.png",
+"https://i.ibb.co/bjjxnfcS/output-0177.png",
+"https://i.ibb.co/BK4TPtmS/output-0178.png",
+"https://i.ibb.co/MyDDNK3y/output-0179.png",
+"https://i.ibb.co/m583msFx/output-0181.png",
+"https://i.ibb.co/dsv86PwL/output-0180.png",
+"https://i.ibb.co/1f1qcmzT/output-0182.png",
+"https://i.ibb.co/fgpyJdK/output-0183.png",
+"https://i.ibb.co/Jjv9jd2J/output-0184.png",
+"https://i.ibb.co/6RW1cYt9/output-0185.png",
+"https://i.ibb.co/0RpksHW2/output-0186.png",
+"https://i.ibb.co/cKgsr5vF/output-0187.png",
+"https://i.ibb.co/svcP2gTy/output-0188.png",
+"https://i.ibb.co/zWT4KfVN/output-0189.png",
+"https://i.ibb.co/d0rZ8g7s/output-0190.png",
+"https://i.ibb.co/xtbxB14F/output-0191.png",
+"https://i.ibb.co/GvmFMv9c/output-0193.png",
+"https://i.ibb.co/JwPyHpwF/output-0192.png",
+"https://i.ibb.co/rhjx7WS/output-0194.png",
+"https://i.ibb.co/2YhVSqk2/output-0195.png",
+"https://i.ibb.co/qFBqrSdp/output-0196.png",
+"https://i.ibb.co/gFvBz9ft/output-0197.png",
+"https://i.ibb.co/9MV4xY0/output-0198.png",
+"https://i.ibb.co/VpQHSfWc/output-0199.png",
+"https://i.ibb.co/rGgkgKdK/output-0200.png",
+"https://i.ibb.co/pB9DS6cY/output-0201.png",
+"https://i.ibb.co/KxgGCVKz/output-0202.png",
+"https://i.ibb.co/84SXQd9V/output-0203.png",
+"https://i.ibb.co/b5HCMfQG/output-0204.png",
+"https://i.ibb.co/Z1gPW9RX/output-0205.png",
+"https://i.ibb.co/DPV7R43d/output-0206.png",
+"https://i.ibb.co/76MGkFS/output-0207.png",
+"https://i.ibb.co/hGFVr3s/output-0208.png",
+"https://i.ibb.co/23JQvwZQ/output-0209.png",
+"https://i.ibb.co/KzRRfdsh/output-0210.png",
+"https://i.ibb.co/gbp8sSfF/output-0211.png",
+"https://i.ibb.co/s95zMRZC/output-0212.png",
+"https://i.ibb.co/20Zg7SXj/output-0213.png",
+"https://i.ibb.co/ZRqppbc9/output-0214.png",
+"https://i.ibb.co/8ncL4cT7/output-0215.png",
+"https://i.ibb.co/qMFvQnv6/output-0216.png",
+"https://i.ibb.co/Fb5j37Rx/output-0217.png",
+"https://i.ibb.co/LDMtwyLn/output-0218.png",
+"https://i.ibb.co/zT8f3DsL/output-0219.png",
+"https://i.ibb.co/r2Y7mshk/output-0220.png",
+"https://i.ibb.co/Z18pG8R3/output-0221.png",
+"https://i.ibb.co/sJHf97Q4/output-0222.png",
+"https://i.ibb.co/93NM02Hm/output-0223.png",
+"https://i.ibb.co/JF2VfnMx/output-0224.png",
+
+  ];
+
+  const container = document.getElementById('container');
+  let currentIndex = 0;
+
+  images.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    if (i === 0) img.classList.add('active');
+    container.appendChild(img);
+  });
+
+  const imgs = container.querySelectorAll('img');
+
+  function showImage(index) {
+    if (index < 0) index = images.length -1;
+    if (index >= images.length) index = 0;
+    imgs.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+    });
+    currentIndex = index;
+  }
+
+  document.getElementById('next').addEventListener('click', () => {
+    showImage(currentIndex + 1);
+  });
+
+  document.getElementById('prev').addEventListener('click', () => {
+    showImage(currentIndex - 1);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      showImage(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      showImage(currentIndex - 1);
+    }
+  });
+</script>
+
+</body>
+</html>
