@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/nora-fatehi-swallows-cum-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/NORA%2BFATEHI%2BGives%2BDilbar%2Bhot%2Bblowjob%2B%28CUSTOM%2BAVAILABLE%29%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/sexy-nora-fatehi-hardcore-porn-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nora-fatehi-casting-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nora-fatehi-naked-lesbian-bondage-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nora-fatehi-pussy-fingering-bedroom-mouth.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/nora-fatehi-spreading-leg-pussy-licking-bj-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/nora-fatehi-seducing-morning-yoga.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/nora-fatehi-fingering-pussy-black-lingerie.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/nora-fatehi-hot-hindi-dancer-red-bikin.mp4"
+"https://cdn.bollyxxx.net/2022/11/26/big-boobs-nora-fatehi-nude-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/nora-fatehi-getting-banged-pov.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/horny-nora-fatehi-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/nora-fatehi-nude-fucked-on-couch-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/nora-fatehi-sucking-fucking-old-man-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nora-fatehi-big-boobs-gangbang-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nora-fatehi-sucking-nude-cock-pov-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nora-fatehi-topless-nude-squeezing-boobs.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nora-fatehi-nude-ass-fuck-blacked-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nora-fatehi-spreading-leg-shaved-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nora-fatehi-striptease-bra-panties-shaved.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/nora-fatehi-sucking-nude-cock-naked-doggy.mp4",
+"https://cdn.pornkeen.net/2022/12/14/nora-fatehi-swallows-cum-fake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/NORA%2BFATEHI%2BGives%2BDilbar%2Bhot%2Bblowjob%2B%28CUSTOM%2BAVAILABLE%29%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/sexy-nora-fatehi-hardcore-porn-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nora-fatehi-casting-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nora-fatehi-naked-lesbian-bondage-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nora-fatehi-pussy-fingering-bedroom-mouth.mp4",
+"https://cdn.pornkeen.net/2022/12/19/nora-fatehi-spreading-leg-pussy-licking-bj-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/20/nora-fatehi-seducing-morning-yoga.mp4",
+"https://cdn.pornkeen.net/2022/12/21/nora-fatehi-fingering-pussy-black-lingerie.mp4",
+"https://cdn.pornkeen.net/2022/12/22/nora-fatehi-hot-hindi-dancer-red-bikin.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/ananya-panday-xxx-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/fake-ai-porn-ananya-panday-double-penetration.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Ananya%2BPandey%2BGirlsDoPorn%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Ananya%2BPandey%2Bcan%2Bbe%2Byour%2BAll-in-one%2Bpackage%2B%28P%2BM%2BFakes%29%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/ananya%2Bpandey.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/sexy-ananya-panday-big-cock-in-pussy-ai-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/ananya.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/ananya1.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/horny-fake-ananya-panday-fucked.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/sexy-ananya-panday-xxx-sextape.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/ananya-panday-xxx-hardcore-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/ananya-panday-bj-without-condom-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/ananya-pandey-having-fun-on-couch.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/ananya-panday-hairy-pussy-check-up-blowjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/ananya-panday-removing-bath-tower-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/ananya-panday-removing-red-bra-small-boobs.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/ananya-panday-live-chat-smoking-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/ananya-panday-naked-live-chat.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/ananya-panday-sexy-interview-striptease.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/ananya-panday-remove-dress-sucking-pink.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/ananya-pandey-undressing-herself-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/ananya-panday-blacked-nude-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/ananya-panday-blacked-nude-fucked1.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/ananya-pandey-nude-gangbang-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/naked-ananya-panday-bedroom-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-ass-fucked-cum-on-face.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-big-dick-deepfake-double-penetration.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-blacked-threesome-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-casting-couch-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-casting-couch-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-deep-throat-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-fat-ass-butt-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-hardcore-double-penetration.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-naked-deepfake-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-stripping-naked-group-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-panday-xxx-blacked-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/ananya-pandey-bedroom-sex-sucking-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/ananya-panday-giving-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/nude-ananya-pandey-sex-scene.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/ananya-panday-naked-bedroom-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/ananya-panday-naked-fucking-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/ananya-panday-anal-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/ananya-panday-giving-hot-boobjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/ananya-panday-blacked-pussy-licking-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/ananya-panday-pussy-squirting-nude-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/ananya-pandey-stripped-deepfake-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/ananya-panday-black-dress-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/ananya-panday-shaking-big-cock-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/ananya-pandey-hot-anal-fucking-group-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/ananya-panday-bondage-pussy-torture.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/ananya-panday-fucking-big-dick-anal-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/ananya-panday-fucked-hard-big-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/ananya-panday-group-sex-nude-hot-deepfake-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/ananya-panday-naked-fucked-big-black-dicks.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/ananya-pandey-fucked-in-bathroom-bed.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/ananya-panday-blowjob-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/ananya-panday-bondage-pussy-torture-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/ananya-panday-mouth-fucked-blowjob-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/ananya-panday-casting-couch-sitting-on.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/ananya-panday-nude-ass-fucking-doggy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/ananya-panday-pussy-fingering-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/ananya-panday-sitting-on-face-sexy-legs.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/shemale-ananya-panday-handjob-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/14/ananya-panday-xxx-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/14/fake-ai-porn-ananya-panday-double-penetration.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Ananya%2BPandey%2BGirlsDoPorn%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Ananya%2BPandey%2Bcan%2Bbe%2Byour%2BAll-in-one%2Bpackage%2B%28P%2BM%2BFakes%29%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/ananya%2Bpandey.mp4",
+"https://cdn.pornkeen.net/2022/12/15/sexy-ananya-panday-big-cock-in-pussy-ai-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/16/ananya.mp4",
+"https://cdn.pornkeen.net/2022/12/16/ananya1.mp4",
+"https://cdn.pornkeen.net/2022/12/16/horny-fake-ananya-panday-fucked.mp4",
+"https://cdn.pornkeen.net/2022/12/16/sexy-ananya-panday-xxx-sextape.mp4",
+"https://cdn.pornkeen.net/2022/12/17/ananya-panday-xxx-hardcore-fake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/ananya-panday-bj-without-condom-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/ananya-pandey-having-fun-on-couch.mp4",
+"https://cdn.pornkeen.net/2022/12/19/ananya-panday-hairy-pussy-check-up-blowjob.mp4",
+"https://cdn.pornkeen.net/2022/12/19/ananya-panday-removing-bath-tower-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/19/ananya-panday-removing-red-bra-small-boobs.mp4",
+"https://cdn.pornkeen.net/2022/12/20/ananya-panday-live-chat-smoking-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/20/ananya-panday-naked-live-chat.mp4",
+"https://cdn.pornkeen.net/2022/12/20/ananya-panday-sexy-interview-striptease.mp4",
+"https://cdn.pornkeen.net/2022/12/21/ananya-panday-remove-dress-sucking-pink.mp4"
+// [Finished in 20.3s]
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

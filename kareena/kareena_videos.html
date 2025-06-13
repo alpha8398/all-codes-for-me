@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/hot-kareena-kapoor-doggy-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bfucked%2Bon%2Bthe%2Btable%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bin%2Ba%2Bthreesome%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Blets%2Byou%2Bfinger%2Bher%2Bcute%2Bpussy%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bnaked%2Bpussy%2Bfucking%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/big-boobs-kareena-kapoor-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/kareena-kapoor-step-mom-hardcore-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/kareena-kapoor-pov-bedroom-fake-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/deepfake-porn-sexy-kareena-kapoor.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kareena-kapoor-porn-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kareena-kapoor-pov-nude-hot-sex-tape.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-big-boobs-pressed-naked-yoga.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-nude-fat-ass-fucked-kitchen.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-shaved-pussy-fucking.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kareena-kapoor-open-cup-white-boobs.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kareena-kapoor-nude-deepfake.mp4"\
+"https://cdn.bollyxxx.net/2022/11/22/kareena-kapoor-hairy-pussy-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/kareena-kapoor-nude-swimming-pool-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/sexy-kareena-kapoor-topless-fingering-puss.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/kareena-kapoor-pussy-licking-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/kareena-kapoor-double-anal-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/kareena-kapoor-nude-ass-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/sexy-kareena-kapoor-sexual-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/Kareena%20Kapoor%20Fucked%20Naked%20big%20boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kareena-kapoor-hot-cleavage-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kareena-kapoor-hot-fucking-hardcore-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kareena-kapoor-hot-white-ass-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kareena-kapoor-in-bikini-stripping-seducin.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/kareena-kapoor-khan-pussy-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/kareena-kapoor-naked-casting-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kareena-kapoor-goes-horny-riding-big-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kareena-kapoor-khan-bra-panties-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/big-boobs-kareena-kapoor-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kareena-kapoor-sexy-nude-ass-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/big-boobs-kareena-kapoor-hot-blowjob-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/hot-anal-gangbang-porn-fake-kareena-kapoor.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kareena-kapoor-hot-fucking-in-doggy-pose.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kareena-kapoor-hot-sex-with-thief.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/big-boobs-kareena-kapoor-handjob-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/hot-deepfake-anal-porn-scene-kareena-kapoor.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kareena-kapoor-fucked-on-table-pussy-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kareena-kapoor-hot-doggy-pose-fucking-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kareena-kapoor-naked-anal-sex-hole-licking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kareena-kapoor-threesome-double-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kareena-kapoor-xxx-hardest-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/naked-kareena-kapoor-hardcore-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-big-ass-anal-sex-cumshot.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-horny-milf-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-naked-body-tied-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-naked-boobs-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-pov-sucking-dick-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-pussy-fingering-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-threesome-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kareena-kapoor-wet-clothes-removed-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/Kareena%20Kapoor%20Spreading%20Legs%20Pussy%20Fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/big-boobs-kareena-kapoor-xxx-blowjob-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-big-boobs-having-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-black-cock-sucking-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-deepfake-xxx-nude-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-hot-big-ass-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-in-young-age-nude-on-chair.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-naked-body-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-naked-spreading-her-legs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-porn-deepfake-fucked-in-different-pose.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-pov-giving-handjob-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-pussy-fingering-ass-hole-licking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-sexy-boobs-pussy-licking-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-shaved-pussy-fucking-machine.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kareena-kapoor-wet-in-pool-naked-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/shemale-kareena-kapoor-handjob-live-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kareena-kapoor-fucked-nude-in-office-riding.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kareena-kapoor-sucking-doctor-black-cock-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kareena-kapoor-big-boobs-nipple-clipped.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kareena-kapoor-round-ass-fucked-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kareena-kapoor-spreading-leg-nude-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kareena-kapoor-spreading-leg-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kareena-kapoor-spreading-leg-shaved-pussy-fucking.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-big-boobs-soap-massage-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-black-bikini-forced-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-black-bikini-mouth-fucking.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-bra-panties-changing-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-khan-sexy-wife-yoga-nude.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-naked-bathroom-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-naked-doggy-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-naked-mom-inserting.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-naked-slave-wife-forced.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-open-white-shirt-boobs.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-spreading-leg-doctor-check.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-spreading-leg-hairy-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kareena-kapoor-sucking-nude-cock-licking.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/small-boobs-naked-kareena-kapoor-handjob.mp4",
+"https://cdn.pornkeen.net/2022/12/14/hot-kareena-kapoor-doggy-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bfucked%2Bon%2Bthe%2Btable%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bin%2Ba%2Bthreesome%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Blets%2Byou%2Bfinger%2Bher%2Bcute%2Bpussy%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kareena%2BKapoor%2Bnaked%2Bpussy%2Bfucking%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/big-boobs-kareena-kapoor-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/15/kareena-kapoor-step-mom-hardcore-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/16/kareena-kapoor-pov-bedroom-fake-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/18/deepfake-porn-sexy-kareena-kapoor.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kareena-kapoor-porn-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kareena-kapoor-pov-nude-hot-sex-tape.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-big-boobs-pressed-naked-yoga.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-nude-fat-ass-fucked-kitchen.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kareena-kapoor-shaved-pussy-fucking.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kareena-kapoor-open-cup-white-boobs.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kareena-kapoor-nude-deepfake.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

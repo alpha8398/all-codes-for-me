@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+
+  "https://cdn.pornkeen.net/2022/12/14/Aishwarya%2BRajesh%2Bsex%2BDeepFake%2BPorn_2.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/Aishwarya%2BRai%2BEye%2BContact%2BHigh%2BRes.%2BHandjob%2B%5BCUSTOMIZATION%2BAVAILABLE%5D%2BDeepFake%2BPorn.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/24331_720p.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-blowjob-fake-porn.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-hot-fakeapp-porn.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-nude-photo-session.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-nude-sex-deepfake.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-outdoor-nude-show.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/aishwarya-rai-xxx-deepfake-porn.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/porn-aishwarya-rai-handjob.mp4",
+  "https://cdn.pornkeen.net/2022/12/14/deepfake-aishwarya-rai-hot-massage.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/AISHWARIA%2BRAI%2BGetting%2Bdestroyed%2Bby%2Bhuge.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/AISHWARIA%2BRAIBUKAKKE%2B%5BCustom%2BAvailable%5D%2BDeepFake%2BPorn.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/Aishwary%2BRai%2BDeepFake%2BPorn_2.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/Aishwarya%2BRai%2Bnaked%2Bblowjob%2BDeepFake%2BPorn.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/Aishwarya%2BRai%2Bnaked%2Bsex%2Bon%2Bthe%2Bcouch%2BDeepFake%2BPorn.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/LUXURICA%2BFREE%2B%5BCustom%2BAvailable%5D%2BYoung%2BAishwarya%2BRai%2BGets%2BBrutal%2BDomination%2BDeepFake%2BPorn.mp",
+  "https://cdn.pornkeen.net/2022/12/15/result%20aishwarya%20to%20stacy%20cruz%20pack%204.mp4",
+  "https://cdn.pornkeen.net/2022/12/15/yt5s.com-Aishwarya%2BSakhuja%2BHot%2B%26amp%3Bamp%3Bamp%3B%2BSexy%2BLook%2BVideo%2B--%28360p%29.mp4",
+  "https://cdn.pornkeen.net/2022/12/16/aishwarya%2Brai%2Bblacked.mp4",
+  "https://cdn.pornkeen.net/2022/12/16/aishwarya%2Brai.mp4",
+  "https://cdn.pornkeen.net/2022/12/16/aishwarya-rai.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwaria-rai-s-first-ever-ai-busty.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-rai-deepfake-porn.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-rai-porn-deepfake.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-rai-porn-deepfakes.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-rai-takes-a-bbc-up-her-tushy.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-rai15.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/aishwarya-sharma-nude-big-boobs-fucked.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/deepfake-aishwarya-rai-takes-big-dick.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/deepfake-of-aishwarya-rai-xxx.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/hot-indian-milf-aishwarya-rai-nude.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/naked-aishwarya-rai-sucking-cock.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/not-aishwarya-rai.mp4",
+  "https://cdn.pornkeen.net/2022/12/18/nude-aishwarya-rai-hot-compilation.mp4",
+  "https://cdn.pornkeen.net/2022/12/20/aishwarya-rai-bikini-threesome-blacked.mp4",
+  "https://cdn.pornkeen.net/2022/12/20/aishwarya-rai-boobs-pressed-sleeping.mp4",
+  "https://cdn.pornkeen.net/2022/12/20/aishwarya-rai-spreading-leg-hairy-pussy.mp4",
+  
+
+
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

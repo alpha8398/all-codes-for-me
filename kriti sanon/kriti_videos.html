@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/Kriti%2BSanon%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Fake%2BKriti%2BSanon%2BMorning%2Bpov%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kriti%2BSanon%2B-Part%2B1-unedited%2Bfirst%2Btry%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kriti%2BSanon%2Bblowjob%2Bpreview%28full%2Bvideo%2B15%2Bmin%2Brequest%2Bonly%29%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/kriti%2Bsanon.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/yt5s.com-Kriti%2BKharbanda%2Ball%2Bhot%2Bkissing%2Bscenes%28360p%29.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/deepfake-kriti-sanon-xxx-fucked-hard.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kriti-kharbanda-pussy-licking-deepfake-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-ass-fucked-doggy-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-deepfake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/nude-kriti-sanon-deepfakes.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/pov-blowjob-kriti-sanon-sucking-big-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-cheating-sex-doggy-nude-ass-fucked.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-doggy-ass-licking-pussy-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-gym-tits-fuck-bj-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-naked-shower-self-sex-bj.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-shared-bj-3some-deepfake-dp.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kriti-sanon-sucking-nude-cock-casting-cowgirl-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kriti-sanon-collage-sex-fat-ass-licked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kriti-sanon-massage-hero-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kriti-sanon-spreading-leg-white-panties.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kriti-sanon-topless-blowjob-pussy-lick.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kriti-sanon-sexy-maid-dress-removed.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kriti-sanon-black-bra-nipple-see-through-striptease.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kriti-sanon-handjob-nude-cock-naked-blowjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kriti-sanon-nude-deepfake-video.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kriti-sanon-small-boobs-pressed-shaved-pussy.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kriti-sanon-sucking-nude-cock-naked-massage.mp4"
+"https://cdn.bollyxxx.net/2022/11/23/kriti-sanon-nude-anal-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/kriti-sanon-dress-big-boobs-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/kriti-sanon-blacked-nude-ass-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kriti-sanon-big-boobs-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kriti-sanon-cumbath-bukkake-facial.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/naked-kriti-sanon-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/sexy-actress-kriti-sanon-nude-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/Kriti%20Sanon%20fucking%20doggy%20style%20deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-hot-ass-fucked-deepdake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-hot-fucked-on-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-hot-pov-handjob-ai-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-naked-casting-couch-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-nude-casting-couch-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kriti-sanon-stripping-nude-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nude-kriti-sanon-casting-couch-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nude-kriti-sanon-hot-anal-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kriti-sanon-big-boobs-fucked-on-table.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kriti-sanon-fucked-black-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kriti-sanon-joi.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kriti-sanon-nude-fucking-doggy.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/fakeapp-kriti-sanon-xxx-anal-sex-tape.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kriti-sanon-boobs-pressed-nude-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kriti-sanon-hot-fingering-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kriti-sanon-nude-ass-hole-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/big-boobs-kriti-sanon-naked-ass-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kriti-sanon-cum-on-mouth-group-cumshot.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/fake-kriti-sanon-naked-in-school-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/fakeapp-kriti-sanon-naked-xxx-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kriti-sanon-big-boobs-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kriti-sanon-in-bikini-giving-boobjob-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kriti-sanon-naked-blowjob-deepfake-doggy-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kriti-sanon-stripping-posing-her-round-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kriti-sanon-deepfake-fucking-during-the-checkup.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kriti-sanon-in-sexy-dress-stripping-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kriti-sanon-naked-deepfake-bedroom-sex-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kriti-sanon-pussy-fucking-cowgirl-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kriti-sanon-sucking-nude-cock-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nude-kriti-sanon-bollywood-deepfakes-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/pov-blowjob-kriti-sanon-sucking-big-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kriti-kharbanda-shemale-handjob-ass-hole-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kriti-sanon-naked-outside-ass-fucking-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kriti-sanon-naked-undressing-clothes-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kriti-kharbanda-blacked-dildo-fucking-sucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kriti-sanon-naked-doggy-style-cowgirl-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-kharbanda-black-lingerie-striptease.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-kharbanda-casting-couch-strip.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-kharbanda-naked-small-boobs-pressed.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-kharbanda-nude-pussy-check-up.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-bedroom-sex-spreading-leg.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-full-nude-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-gym-tits-fuck-bj-naked.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-handjob-nude-cock.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-hotel-room-blacked-big-dick.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-mouth-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-nipple-slip-handjob-nude.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-red-bra-panties-removed-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-striptease-bra-nude-nipple.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-sucking-big-black-cock-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-sucking-licking-nude-cock.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kriti-sanon-sucking-nude-cock-without.mp4",
+"https://cdn.pornkeen.net/2022/12/14/Kriti%2BSanon%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Fake%2BKriti%2BSanon%2BMorning%2Bpov%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kriti%2BSanon%2B-Part%2B1-unedited%2Bfirst%2Btry%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kriti%2BSanon%2Bblowjob%2Bpreview%28full%2Bvideo%2B15%2Bmin%2Brequest%2Bonly%29%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/kriti%2Bsanon.mp4",
+"https://cdn.pornkeen.net/2022/12/15/yt5s.com-Kriti%2BKharbanda%2Ball%2Bhot%2Bkissing%2Bscenes%28360p%29.mp4",
+"https://cdn.pornkeen.net/2022/12/18/deepfake-kriti-sanon-xxx-fucked-hard.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kriti-kharbanda-pussy-licking-deepfake-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-ass-fucked-doggy-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-deepfake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/kriti-sanon-nude-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/nude-kriti-sanon-deepfakes.mp4",
+"https://cdn.pornkeen.net/2022/12/18/pov-blowjob-kriti-sanon-sucking-big-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-cheating-sex-doggy-nude-ass-fucked.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-doggy-ass-licking-pussy-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-gym-tits-fuck-bj-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-naked-shower-self-sex-bj.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-shared-bj-3some-deepfake-dp.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kriti-sanon-sucking-nude-cock-casting-cowgirl-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kriti-sanon-collage-sex-fat-ass-licked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kriti-sanon-massage-hero-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kriti-sanon-spreading-leg-white-panties.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kriti-sanon-topless-blowjob-pussy-lick.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kriti-sanon-sexy-maid-dress-removed.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kriti-sanon-black-bra-nipple-see-through-striptease.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kriti-sanon-handjob-nude-cock-naked-blowjob.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kriti-sanon-nude-deepfake-video.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kriti-sanon-small-boobs-pressed-shaved-pussy.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kriti-sanon-sucking-nude-cock-naked-massage.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.bollyxxx.net/2022/11/22/anushka-sharma-casting-couch-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/anushka-shetty-nude-ass.mp4",
+// "https://cdn.bollyxxx.net/2022/11/23/anushka-sharma-nude-riding-on-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/23/anushka-shetty-nude-casting-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/23/busty-anushka-shetty-pussy-fingering.mp4",
+// "https://cdn.bollyxxx.net/2022/11/24/anushka-sharma-naked-wife-sharing.mp4",
+// "https://cdn.bollyxxx.net/2022/11/24/anushka-sharma-sucking-nude-cock-cum.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/anushka-shetty-big-boobs-nude-hot-cleavage.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/nude-anushka-shetty-outdoor-pussy-fingerin.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/anushka-shetty-nude-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/anushka-shetty-pussy-fucked-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/anushka-shetty-striptease-titsjob-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/26/anushka-sharma-nipple-pressed-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/anushka-shetty-xxx-anal-deepfake-blwojob.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/big-boobs-anushka-shetty-shaved-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/deepfake-anushka-shetty-xxx.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/anushka-shetty-fucked-near-pool.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/anushka-shetty-hardcore-fucking-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/big-boobs-anushka-shetty-nude-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/28/nude-anushka-sharma-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/nude-anushka-shetty-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/tamil-actress-anushka-shetty-cum-lover.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/anushka-shetty-hardcore-anal-sex-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/anushka-shetty-pussy-fingering-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/29/naked-anushka-sharma-plays-with-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/Anushka%20Shetty%20deepfake%20fucking%20hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/nude-anushka-shetty-hard-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/anushka-sharma-hot-blowjob-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/anushka-sharma-naked-ass-fucked-hard-1.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/anushka-sharma-naked-casting-fuck-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/anushka-sharma-nude-boobs-pressed.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/anushka-sharma-nude-pussy-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/anushka-shetty-ass-blacked-big-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/anushka-shetty-big-boobs-hardcore-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/anushka-shetty-naked-casting-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/anushka-shetty-sexy-deepfake-hot-movie.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/anushka-shetty-xxx-casting-couch-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/31/hot-anushka-sharma-enjoying-anal-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/naked-anushka-shetty-hairy-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/nude-anushka-shetty-fucked-big-black-cock.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sen-nude-sucking-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-anal-sex-deepfake-ass-hole/.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-black-dick-anal-blacked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-boobs-pressed-fucked-hard.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-stripping-clothes-pov-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-sucking-cock-in-bikini.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/anushka-sharma-sucking-dick-like-whore.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/big-boobs-anushka-shetty-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/32/sexy-anushka-sharma-fucked-on-couch.mp4",
+// "https://cdn.bollyxxx.net/2022/11/33/anushka-sharma-blacked-naked-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/33/anushka-sharma-gangbang-hardcore-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/anushka-shetty-naked-big-ass-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/anushka-shetty-pussy-fingering-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/33/naked-anushka-sharma-hot-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/33/sexy-anushka-sharma-nude-applying-oil.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sen-naked-fingering-her-pussy.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sen-naked-giving-hot-boobsjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sen-sucking-cock-deepfake-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sharma-dress-removed-blowjob-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sharma-hard-fucking-in-different-sex.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sharma-in-red-lingerie-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sharma-pussy-blacked-doggy-style.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/anushka-sharma-xxx-fucked-hard-in-her-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/anushka-shetty-naked-house-keeping-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/anushka-shetty-removing-black-bra-panties.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/big-boobs-anushka-shetty-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/big-boobs-anushka-shetty-nude-doggy-style.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/naked-anushka-sen-shaved-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/naked-anushka-shetty-pussy-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/34/nimrat-khaira-anushka-sharma-hot-group-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/sexy-anushka-shetty-big-boobs-naked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-ass-fucked-doggy-style-licking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-bedroom-fucked-doggy-style.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-fucked-in-office-hot-threesome.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-nude-ass-fucked-doggy-style.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-removing-partner-pant-giving-handjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sen-riding-on-dick-fuck-hard.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-ass-hole-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-big-boobs-giving-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-cock-sucking-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-fucked-in-pool-different-pose.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-in-black-lingerie-striptease-nude.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-naked-xxx-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-nude-car-riding-on-cock-fake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-pov-dick-sucking-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-xxx-doggy-style-fuck.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/anushka-sharma-xxx-naked-on-bed-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/anushka-shetty-giving-boobjob-hard-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/anushka-shetty-in-outdoor-goes-naked-fingering-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/anushka-shetty-naked-riding-on-dildo-sex-toy.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/anushka-shetty-outdoor-striptease-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/anushka-shetty-pov-cowgirl-riding-on-top.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/big-ass-anushka-shetty-fucked-ai-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/busty-boobs-anushka-shetty-outdoor-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/naked-anushka-sharma-fingering-inserting-dildo.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/naked-anushka-shetty-pussy-fucking-machine.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/sexy-anushka-sharma-ass-fucking-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/sexy-anushka-shetty-nude-ass-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/35/topless-anushka-sen-xxx-naked-handjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-after-exercise-fucked-in-gym.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-blacked-threesome-anal-handjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-boobs-nipple-pussy-fingering.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-boobs-pressed-nipple-pierced.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-naked-bed-sex-doggy-style-fuck.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-nude-on-bed-fucked-hard.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sen-pov-naked-ass-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-big-black-cock-doggy-style.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-big-boobs-pussy-fingering.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-bikini-teasing-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-car-sex-pussy-fingering.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-enjoying-sex-in-hardcore.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-fucked-with-dildo-machine.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-group-fucking-big-dicks.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-in-black-dress-stripping.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-in-outdoor-pissing-boobs-pressing.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-in-red-bikini-fucked-in-doggy-pose.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-naked-xxx-fucked-fake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-pussy-fucked-anal-sex.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-sex-compilation-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-sex-compilation-hot-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-xxx-fake-hot-gangbang.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/anushka-sharma-xxx-sex-compilation-hot.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-cowgirl-sex-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-fingering-anal-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-fucked-hard-in-different-pose.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-naked-golden-shower-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-naked-on-couch-hot-pussy-licking-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-pov-nude-cowgirl-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-pussy-fucking-machine.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-removing-pant-showing-her-big-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/anushka-shetty-sucking-two-dicks-hot-gangbang.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/big-ass-nurse-anushka-shetty-riding-on-cock.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/big-boobs-anushka-sharma-hot-ass-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/big-boobs-anushka-sharma-nude-ass-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/deepfake-sex-anushka-sharma-riding-on-dick.mp4",
+// "https://cdn.bollyxxx.net/2022/11/36/horny-anushka-sharma-xxx-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/hot-nurse-anushka-shetty-sucking-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sexy-ass-anushka-shetty-enjoying-anal-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sexy-ass-anushka-shetty-nude-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/south-actress-nude-fakes-anushka-shetty.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/telugu-nude-anushka-shetty-riding.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sen-ass-fucking-doggy-style-cum-on-mouth.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sen-fucked-doggy-style-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sen-goes-nude-fucked-hard-on-couch.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sen-riding-on-dick-fuck-hard-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-ass-fucking-hardcore-pose.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-during-workout-goes-nude.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-hardcore-fucking-in-different-pose.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-hot-cock-sucking-fucked.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-naked-bedroom-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-pussy-fingering-hardcore-anal-fucking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/37/anushka-sharma-pussy-fucking-car-sex-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/anushka-shetty-big-boobs-pov-giving-tits-job.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/anushka-shetty-blacked-gangbang-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/anushka-shetty-doggy-style-nude-ass-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/anushka-shetty-got-seduced-nude-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/anushka-shetty-standing-fucking-dick-sucking-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/nude-anushka-shetty-taking-all-cum.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/shemale-anushka-shetty-handjob-her-cock.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-black-bikini-audition-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-busty-boobs-bouncing-deepfake.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-casting-couch-blacked-blowjob.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-naked-body-tied-hairy-pussy.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-pov-sucking-cock-doggy-style-sex.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sen-pussy-fucking-nude-pov-sex.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sharma-naked-boobs-nipple-milking.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sharma-spreading-leg-nude-ass-hole.mp4",
+// "https://cdn.bollyxxx.net/2022/11/38/anushka-sharma-threesome-blacked-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/anushka-shetty-big-boobs-naked-slave.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/anushka-shetty-doggy-style-nude-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/anushka-shetty-spreading-leg-naked-round-ass.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sen-open-white-shit-nude-boobs-nipple.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sen-spreading-leg-pressing-boobs.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-big-boobs-slave-riding-on-cock.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-blacked-naked-bedroom.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-blowjob-forced-fuck.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-naked-casting-couch.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-naked-hot-wife-casting.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-red-hot-bikini-pool.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/anushka-sharma-shaved-pussy-shower-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-bedroom-handjob-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-black-bikini-naked-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-bra-changing-naked-shower.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-bra-panties-selfie-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-bra-panties-striptease-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-fat-butt-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-naked-dildo-pussy-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-naked-outdoor-body-pissing.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-naked-slave-nipple-clipped.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-naked-slave-tied-body.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-nude-round-butt-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/anushka-shetty-sexy-saree-slip-low-neck.mp4",
+// "https://cdn.bollyxxx.net/2024/01/01/big-boobs-anushka-sen-naked-fucking.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/big-boobs-anushka-shetty-spreading-leg.mp4",
+"https://cdn.pornkeen.net/2022/12/14/Anushka%2BShetty%2Bfucking%2Bwith%2BBF%2B%5B%2BPAID%2BREQUST%2B%5D%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/14/anushka-shetty-deepfake-porn-pussy-fuck.mp4",
+"https://cdn.pornkeen.net/2022/12/14/anushka-shetty-fake-pov-fucking.mp4",
+"https://cdn.pornkeen.net/2022/12/14/anushka-shetty-fakeapp-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/anushka-shetty-hardcore-sex-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/14/anushka-shetty-nude-fake.mp4",
+"https://cdn.pornkeen.net/2022/12/14/nude-anushka-shetty-fake-ai-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/porn-anushka-shetty-nude-actress.mp4",
+"https://cdn.pornkeen.net/2022/12/15/ANUSHKA%20SHETTY%20%28fake%29%20PARTY%20DANCEING%20%28new%20style%20remix%20non%20nude%20striptease%29%20DeepFake%20Porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Anushka%2BSharma%2BLoves%2BBBC%2Bin%2B4K%2B-%2B%5BFree%2BFull%2BDownload%5D%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Anushka%2BSharma%2Bnaked%2Bpov%2Bsex%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Anushka%2BShetty%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Fake%2BAnushka%2BSharma%2Btest%2B2%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Indian%2BCelebrities-%2BFake%2BAnushka%2BSharma%2B-1%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Subscriber%2BRequest%2BAnushka%2BSharma%2BAnal%2B2%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/anushka-sharma-hardcore-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/15/anushka.mp4",
+"https://cdn.pornkeen.net/2022/12/15/deepfake-anushka-shetty-xxx.mp4",
+"https://cdn.pornkeen.net/2022/12/15/south-actress-anushka-shetty-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/anushka-sharma-casting-couch-fucking.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/anushka%2Bsharma%281%29.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/anushka%2Bsharma.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/fake-porn-anushka-sharma-having-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/horny-anushka-sharma-fucked-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/horny-anushka-sharma-sex-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/anushka-sen-sucking-dick-riding.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/anushka-sharma-hot-compilation.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/anushka-sharma-in-mini-skirt-paying-the-rent.mp4",
+"https://cdn.pornkeen.net/2022/12/18/anushka-shetty-nude-deepfake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/anushka-shetty-nudes-fake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/big-boobs-anushka-shetty-fucked-hard.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/not-anushka-sharma-hypnotised.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/sexy-anushka-sharma-hot-pool-side-fucking.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/anushka-sharma-boobs-nipple-nude-pussy.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/anushka-sharma-removing-dress-shaved-pussy.mp4",
+"https://cdn.pornkeen.net/2022/12/19/anushka-shetty-bathroom-pussy-fingering-sofa.mp4",
+"https://cdn.pornkeen.net/2022/12/19/anushka-shetty-bra-changing-naked-shower-handjob.mp4",
+"https://cdn.pornkeen.net/2022/12/19/anushka-shetty-breast-pressed-white-bra.mp4",
+"https://cdn.pornkeen.net/2022/12/19/anushka-shetty-pussy-licking-blowjob-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/19/naked-anushka-shetty-dildo-fucking-machine-bdsm.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/anushka-sen-remove-dress-boobs.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/anushka-sharma-bikini-seduce-blowjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/anushka-sharma-naked-live-chat-butt.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/anushka-sharma-seduce-young-boy.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/anushka-sharma-sucking-big-black.mp4",
+"https://cdn.pornkeen.net/2022/12/20/anushka-shetty-bath-towel-live-cam.mp4",
+"https://cdn.pornkeen.net/2022/12/20/anushka-shetty-big-boobs-pressed.mp4",
+"https://cdn.pornkeen.net/2022/12/20/anushka-shetty-blouse-casting-doggy.mp4",
+"https://cdn.pornkeen.net/2022/12/20/anushka-shetty-dress-pussy-fingering.mp4",
+"https://cdn.pornkeen.net/2022/12/20/anushka-shetty-nude-body.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sen-big-boobs-pressed-shaved.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sen-sexy-house-maid-paid-blowjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sharma-nipple-slip-bra.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sharma-nude-ass-shower-without.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sharma-remove-bra-panties-bold.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/anushka-sharma-spreading-leg-shaved.mp4",
+"https://cdn.pornkeen.net/2022/12/21/anushka-shetty-big-boobs-telugu-actress-massage.mp4",
+"https://cdn.pornkeen.net/2022/12/21/anushka-shetty-dress-change-video.mp4",
+"https://cdn.pornkeen.net/2022/12/21/anushka-shetty-handjob-nude-cock-big.mp4",
+"https://cdn.pornkeen.net/2022/12/21/anushka-shetty-spreading-leg-open-boobs.mp4",
+"https://cdn.pornkeen.net/2022/12/21/anushka-shetty-suck-nude-cock-pussy-lick.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/anushka-sharma-handjob-nude-cock-bathtub.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/anushka-sharma-sexy-bollywood-mon-suck.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/anushka-sharma-spreading-leg-shaved-pussy.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/anushka-sharma-striptease-hot-hindi-heroine-nude.mp4",
+"https://cdn.pornkeen.net/2022/12/22/anushka-shetty-mouth-fucked-nude-boobs-pressed.mp4",
+"https://cdn.pornkeen.net/2022/12/22/anushka-shetty-sexy-pink-dress-removed.mp4",
+"https://cdn.pornkeen.net/2022/12/22/anushka-shetty-striptease-naked-body.mp4",
+"https://cdn.pornkeen.net/2022/12/22/anushka-shetty-suck-nude-cock-pussy-lick.mp4",
+"https://cdn.pornkeen.net/2022/12/22/anushka-shetty-towel-removed-naked-bathtub-handjob.mp4"
+// [Finished in 7.2s]
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

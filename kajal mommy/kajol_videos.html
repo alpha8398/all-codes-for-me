@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/KAJOL%2BDEVGANLactating%2Bbusty%2BLook%2Bcam%2Bsex%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/kajol-lingerie-deepfakes-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/milf-actress-kajol-nude-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kajol%2BDevgan%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.%2B3%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.1%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.2%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kajol%2Bagarwal%2Bdeep%2Bfake%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Not%2BKAJOL%2BDEVGAN%2B-%2BTeased%2Bat%2BFunction%2Band%2BOffice%2Band%2BFucked%2Bat%2BHome%21%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/indian-actress-kajol-nude-compilation.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/horny-kajol-milf-holding-big-dick.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kajol-busty-bra-cleavage-pussy-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kajol-devgan-butt-plugged-tail-fat-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kajol-devgan-hairy-pussy-check-up-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kajol-devgan-massage-nude-cock-handjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kajol-seducing-car-driver-sex-blowjob-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kajol-devgan-blacked-cock-suck-doggy-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kajol-devgan-newsreader-blowjob-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kajol-devgan-handjob-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kajol-sexy-red-bra-selfie-bollywood-milf.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/Kajol-Devgn-busty-milf-actress-stripped-nu.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/kajol-devgan-milf-bra-panties-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/kajol-devgan-open-blouse-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/big-boobs-kajol-devgan-nude-ass-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/kajol-devgan-pussy-fingering-topless.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/kajol-pussy-fingering-nude-at-the-movie.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/big-boobs-kajol-hot-solo-masturbations.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/kajol-devgn-fucked-hardcore-in-pussy-hole.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/big-ass-kajol-enjoying-big-dick-in-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/kajol-devgan-ass-force-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/kajol-cummed-hard-on-her-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kajol-devgan-sharing-wife-bisexual-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kajol-devgn-nude-office-sex-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/sexy-kajol-topless-boobs-pressed.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/nude-kajol-hot-milf-enjoying-lesbian-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/milf-kajol-striptease-in-office-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/horny-kajol-in-lingerie-hot-blowjob-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/hot-kajol-posing-big-boobs-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kajol-naked-in-gym-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/big-boobs-kajol-striptease-posing-her-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/busty-boobs-kajol-blacked-nude-ass-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/busty-kajol-big-boobs-bounching-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kajol-big-boobs-nude-nipple-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kajol-devgan-showing-her-big-boobs-squeezing.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kajol-devgn-naked-on-floor-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/big-boobs-kajol-fucked-in-office-big-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/busty-kajol-nude-hot-gangbang-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/busty-kajol-nude-in-bathtub-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/horny-kajol-big-hanging-boobs-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kajol-devgan-squeezing-her-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kajol-devgn-fucked-in-ass-enjoying-gangbang-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kajol-goes-horny-in-office-fucked-by-boss.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kajol-hardcore-pussy-fucked-by-big-dick-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kajol-sexy-song-striptease-nude-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/busty-boobs-kajol-black-hot-fucking-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/kajol-devgan-big-boobs-nude-nipple.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/sexy-kajol-big-boobs-bounching-nude-ass-fucked.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/big-boobs-kajol-devgan-fat-ass-milf.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kajol-big-boobs-milf-blacked-nipple.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kajol-devgan-fat-ass-naked-spreading-leg-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/14/KAJOL%2BDEVGANLactating%2Bbusty%2BLook%2Bcam%2Bsex%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/kajol-lingerie-deepfakes-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/milf-actress-kajol-nude-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kajol%2BDevgan%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.%2B3%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.1%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kajol%2BGreatest%2BFucks%2BPart.2%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kajol%2Bagarwal%2Bdeep%2Bfake%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Not%2BKAJOL%2BDEVGAN%2B-%2BTeased%2Bat%2BFunction%2Band%2BOffice%2Band%2BFucked%2Bat%2BHome%21%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/indian-actress-kajol-nude-compilation.mp4",
+"https://cdn.pornkeen.net/2022/12/19/horny-kajol-milf-holding-big-dick.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kajol-busty-bra-cleavage-pussy-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kajol-devgan-butt-plugged-tail-fat-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kajol-devgan-hairy-pussy-check-up-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kajol-devgan-massage-nude-cock-handjob.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kajol-seducing-car-driver-sex-blowjob-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kajol-devgan-blacked-cock-suck-doggy-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kajol-devgan-newsreader-blowjob-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kajol-devgan-handjob-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kajol-sexy-red-bra-selfie-bollywood-milf.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

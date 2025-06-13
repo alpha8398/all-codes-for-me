@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/deepfake-of-kiara-advani-nude.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/kiara-advani-face-swap-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/kiara-advani-nude-deepfake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2BBBC%2BRomantic%2BFuck%2B%28Paid%2BRequest%29%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2BPOV%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2Bhard%2Bfucking.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2Breverse%2Bcowgirl%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/NOT%2BKiara%2BAdvani%2B%28Busty%2Bversion%29%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Not%2BKiara%2BAdvani%2Bin%2BStepsisters%2Bthreesome%2Bporn%2B%5BPART%2B1%5D%2Bquwdfroo%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/alia-bhatt-kiara-advani-nude-threesome-fake.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/kiara%2Badvani.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/kiara-advani-taking-big-dick.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/kiara.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/kiara-advani-deep-fake-porn-by-vip.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/big-boobs-kiara-advani-blacked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-big-boobs-bikini-threesome.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-boobs-oil-massage-poolside.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-boobs-pressed-round-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-hindi-film-actress-remove.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-hindi-heroine-bed-striptease.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-massage-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-naked-bath-blowjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-remove-dress-bra-panties.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-sexy-interview-naked-bed.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/kiara-advani-sucking-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kiara-advani-nude-casting-couch.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kiara-advani-remove-lacy-lingerie-and-poses.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kiara-advani-remove-panties-fuck-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/kiara-spreading-leg-live-webcam-chat.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kiara-advani-big-boobs-fat-ass-playboy-bikini.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kiara-advani-hot-hindi-heroine-remove-black.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/kiara-advani-pussy-fingering-nude-ass-naked-body.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/kiara-advani-nude-private-resort-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/kiara-advani-topless-boobs-touching.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/nude-kiara-advani-hotel-room-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/23/kiara-advani-nude-ass-licking.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/kiara-advani-small-boobs-xxx-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/kiara-advani-xxx-dick-sucking-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/Kiara%20Advani%20nude%20hairy%20pussy%20fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/kiara-advani-striptease-xxx-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/naked-kiara-advani-bedroom-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/kiara-advani-nude-massage-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/kiara-advani-nude-pussy-blacked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/kiara-advani-pussy-licking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/kiara-advani-riding-on-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/naked-kiara-advani-fucking-oyo-room-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/kiara-advani-hot-ass-blacked-xxx.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/kiara-advani-sexy-nude-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/alia-bhatt-kiara-advani-hot-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kiara-advani-big-ass-fucking-handjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kiara-advani-blue-lingerie-playing-black-dick-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kiara-advani-hot-fucking-handjob-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/kiara-advani-xxx-lesbian-sex-bahtroom.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kiara-advani-fucking-doggy-style-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/kiara-advani-hot-striptease-blowjob-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kiara-advani-hot-blowjob-outdoor-hot-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kiara-advani-pussy-fingering-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kiara-advani-spreading-her-legs-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kiara-advani-sucking-cock-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kiara-advani-ass-hole-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kiara-advani-dildo-play-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kiara-advani-hot-dress-strip-enjoying-hot-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kiara-advani-naked-boobs-pressed-hot-anal-fuck-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/kiara-advani-pussy-licked-black-dick-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/xxx-kiara-advani-blacked-nude-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-blacked-nude-anal-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-fucked-hard-in-doggy-pose.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-hardcore-fucked-in-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-naked-on-couch-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-topless-giving-boob-job-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/kiara-advani-undress-clothes-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/sexy-kiara-advani-naked-boobs-hot-ass.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-ass-pussy-licking-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-blacked-hardcore-dick-riding.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-dick-sucking-fucked-in-outdoor.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-doggy-style-ass-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-fakeapp-nude-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-hard-fuck-xxx-on-bed.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-hardcore-fucking-on-bed.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-in-hotel-room-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-naked-pussy-check-up-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-nude-ass-blacked-deepfake-anal-fuck-forced-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-nude-hotel-sex-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-nude-in-class-sex-scene-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-outdoor-nude-show.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-pov-dick-sucking-hard-fuck.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-pov-nude-fucked-in-garage.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-pussy-fucked-doggy-style-by-doctor.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-pussy-squirting-fingering-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-spreading-legs-naked-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/kiara-advani-striping-dress-fingering-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/nude-kiara-advani-ass-fucked-black-cock-ai-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/pov-kiara-advani-by-workout-blowjob-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/naked-kiara-advani-pussy-licking-on-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kiara-advani-black-lingerie-strip-live.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/kiara-advani-hardcore-blowjob-pussy-ass-hole-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/shemale-kiara-advani-striptease-webcam-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-bikini-ass-hole-fingering.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-blacked-casting-couch-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-blacked-naked-pussy-licking.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-boobs-nipple-blowjob-nude-ass.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-forced-producer-office-sex.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-lesbian-twin-fucking-nude.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-naked-slim-ass-licked.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-nude-white-round-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-sexy-lesbian-twin-striptease.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-small-boobs-nipple-naked.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/kiara-advani-sucking-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/14/deepfake-of-kiara-advani-nude.mp4",
+"https://cdn.pornkeen.net/2022/12/14/kiara-advani-face-swap-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/14/kiara-advani-nude-deepfake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2BBBC%2BRomantic%2BFuck%2B%28Paid%2BRequest%29%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2BPOV%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2Bhard%2Bfucking.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Kiara%2BAdvani%2Breverse%2Bcowgirl%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/NOT%2BKiara%2BAdvani%2B%28Busty%2Bversion%29%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Not%2BKiara%2BAdvani%2Bin%2BStepsisters%2Bthreesome%2Bporn%2B%5BPART%2B1%5D%2Bquwdfroo%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/16/alia-bhatt-kiara-advani-nude-threesome-fake.mp4",
+"https://cdn.pornkeen.net/2022/12/16/kiara%2Badvani.mp4",
+"https://cdn.pornkeen.net/2022/12/16/kiara-advani-taking-big-dick.mp4",
+"https://cdn.pornkeen.net/2022/12/16/kiara.mp4",
+"https://cdn.pornkeen.net/2022/12/19/kiara-advani-deep-fake-porn-by-vip.mp4",
+"https://cdn.pornkeen.net/2022/12/20/big-boobs-kiara-advani-blacked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-big-boobs-bikini-threesome.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-boobs-oil-massage-poolside.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-boobs-pressed-round-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-hindi-film-actress-remove.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-hindi-heroine-bed-striptease.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-massage-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-naked-bath-blowjob.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-remove-dress-bra-panties.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-sexy-interview-naked-bed.mp4",
+"https://cdn.pornkeen.net/2022/12/20/kiara-advani-sucking-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kiara-advani-nude-casting-couch.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kiara-advani-remove-lacy-lingerie-and-poses.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kiara-advani-remove-panties-fuck-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/21/kiara-spreading-leg-live-webcam-chat.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kiara-advani-big-boobs-fat-ass-playboy-bikini.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kiara-advani-hot-hindi-heroine-remove-black.mp4",
+"https://cdn.pornkeen.net/2022/12/22/kiara-advani-pussy-fingering-nude-ass-naked-body.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/18/sreeleela-handjob-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/sreeleela-hard-fucking-in-kitchen.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/sreeleela-3some-handjob-boobs-pressed.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/sreeleela-big-boobs-sexy-leg-fat-ass.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/sreeleela-sucking-big-black-cock-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/sreeleela-morning-yoga-live-without-dress.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/sreeleela-naked-couch-suck-small-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/sreeleela-pussy-lick-naked-bed-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/sreeleela-red-bra-selfie-naked-pussy-piss.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/sreeleela-sexy-telugu-heroine-nude-beach.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/big-boobs-fat-ass-sreeleela-bikini-test.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-black-bra-cleavage-round-ass-pussy.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-busty-boobs-massage-handjob.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-fuck-her-director-mouth-and-ass-hole.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-low-neck-cleavage-message-nude-cock.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-pussy-lick-naked-bed-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-remove-black-bra-big-boobs-telugu.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-seduce-black-stockings-red-lingerie.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-sexy-telugu-heroine-nude-beach.mp4",
+// "https://cdn.pornkeen.net/2022/12/22/sreeleela-striptease-dress-removed-naked.mp4"
+"https://cdn.bollyxxx.net/2022/11/32/sreeleela-nude-webcam-video-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-black-bra-pressed-lingerie-removed-deepfake-blacked-cock-licking-sucking-video.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-blacked-ass-hole-fucked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-boobs-pressed-slave-body-tied.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-dress-removed-sucking-big-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-nude-ass-blacked-mouth-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sreeleela-pussy-fucked-naked-doggy-style.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/shemale-sreeleela-handjob-cum-on-live.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/sreeleela-spreading-leg-nude-round-ass.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/shemale-sreeleela-handjob-her-cock-ass.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-black-bra-panties-casting.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-inserting-dildo-inside-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-naked-body-tied-bondage-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-naked-slim-body-bondage-torture.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-nude-ass-hole-fucking-doggy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-spreading-leg-black-stocking-pussy.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/sreeleela-white-bra-sexy-bold-shoot.mp4",
+"https://cdn.pornkeen.net/2022/12/18/sreeleela-handjob-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/18/sreeleela-hard-fucking-in-kitchen.mp4",
+"https://cdn.pornkeen.net/2022/12/19/sreeleela-3some-handjob-boobs-pressed.mp4",
+"https://cdn.pornkeen.net/2022/12/19/sreeleela-big-boobs-sexy-leg-fat-ass.mp4",
+"https://cdn.pornkeen.net/2022/12/20/sreeleela-sucking-big-black-cock-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/21/sreeleela-morning-yoga-live-without-dress.mp4",
+"https://cdn.pornkeen.net/2022/12/21/sreeleela-naked-couch-suck-small-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/21/sreeleela-pussy-lick-naked-bed-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/21/sreeleela-red-bra-selfie-naked-pussy-piss.mp4",
+"https://cdn.pornkeen.net/2022/12/21/sreeleela-sexy-telugu-heroine-nude-beach.mp4",
+"https://cdn.pornkeen.net/2022/12/22/big-boobs-fat-ass-sreeleela-bikini-test.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-black-bra-cleavage-round-ass-pussy.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-busty-boobs-massage-handjob.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-fuck-her-director-mouth-and-ass-hole.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-low-neck-cleavage-message-nude-cock.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-pussy-lick-naked-bed-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-remove-black-bra-big-boobs-telugu.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-seduce-black-stockings-red-lingerie.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-sexy-telugu-heroine-nude-beach.mp4",
+"https://cdn.pornkeen.net/2022/12/22/sreeleela-striptease-dress-removed-naked.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

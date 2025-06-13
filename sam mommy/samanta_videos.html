@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/deepfake-porn-kajal-aggarwal-samantha.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/kajal-aggarwal-samantha-nude-deepfakes.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/naked-samantha-ruth-prabhu-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/samantha-prabhu-xxx-deep-fakes.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/samantha-ruth-prabhu-home-sex-scene.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/samantha-ruth-prabhu-xxx-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/First%2Bdeep%2Bfake%2Bof%2BSamanta%2BRuth%2Bprabhu%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/PRMOVIES.COM_AWESOME%2BMAUSAM%2BSHERLYN%2BCHOPRA.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Samantha%2BRuth%2BPrabhu%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Samantha%2BRuth%2BPrabhu%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Samantha%2Bblack%2Cailed%2Band%2Bfucked%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Seduction%2BIn%2BRed%2Bwith%2BCreampie%2B-%2BSamantha%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Tamanna%2Bbhatia%2Band%2BSamanta%2BRuth%2Bprabhu%2Bdeep%2Bfake%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/yt5s.com-Sameera%2BReddy%2BHot%2BScene%2Bin%2BSaree.mp4",
+// "https://cdn.pornkeen.net/2022/12/16/nude-samantha-passionate-morning-sex.mp4",
+// "https://cdn.pornkeen.net/2022/12/17/samantha.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/samantha-bj-without-condom-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/samantha-ruth-prabhu-deepfake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/samantha-ruth-prabhu-massage.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-bedroom-doggy-ass-licking-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-big-boobs-pressed-ass-hole.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-boobs-nipple-pussy-check-up.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-boobs-pressed-casting.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-sexy-skirt-audition.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-sucking-cock-red.mp4",
+// "https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-webcam-casting-couch.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-busty-boobs.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-fucking-doctor-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-naked-maid-big.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-wet-shower-nipple.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/samridhi-shukla-blacked-naked.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/two-boys-licking-nipples-same-time-fake-mina.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/samantha-ruth-prabhu-busty-boobs-black.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/samantha-ruth-prabhu-sexy-robo-boobs.mp4"
+"https://cdn.bollyxxx.net/2022/11/22/samantha-and-kajal-doing-lesbian-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/samantha-ruth-prabhu-big-boobs-nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/samantha-ruth-prabhu-removing-her-towel.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/samantha-ruth-prabhu-sucking-fucking-deepf.mp4",
+"https://cdn.bollyxxx.net/2022/11/22/samantha-ruth-prabhu-touching-boobs-presse.mp4",
+"https://cdn.bollyxxx.net/2022/11/23/Samantha%20Ruth%20Prabhu%20Nude%20bathroom%20sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/24/samantha-ruth-prabhu-nude-ass-licked-deepf.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/Samantha%20Ruth%20Prabhu%20big%20boobs%20nude.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-pussy-licking-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-ruth-prabhu-ass-hole-blacked.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-ruth-prabhu-casting-couch-striptease.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-ruth-prabhu-hot-naked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-ruth-prabhu-nude-big-boobs-nipple.mp4",
+"https://cdn.bollyxxx.net/2022/11/25/samantha-ruth-prabhu-nude-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/Samantha%20Ruth%20Prabhu%20Hardcore%20Fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/kajal-aggarwal-samantha-hot-group-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/naked-kajal-aggarwal-and-samantha-threesome-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/naked-kajal-and-samantha-hardcore-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-naked-body-blacked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-hot-fucking-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-fucked-on-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-hardcore-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-hot-naked-scene.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-naked-lesbian-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-nude-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-prabhu-striptease-house-cleaning.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-ruth-riding-on-dick-hardcore-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/26/samantha-striptease-handjob-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/samantha-and-kajal-threesome-fun.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/samantha-ruth-prabhu-giving-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/samantha-ruth-prabhu-lifted-her-legs-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/27/samantha-ruth-prabhu-nude-riding-on-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/samantha-deepfake-bedroom-lingerie.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/samantha-reverse-cowgirl-position-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/samantha-ruth-prabhu-fucking-sucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/samantha-stripping-her-dress-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/sexy-samantha-invisible-boobs-touch.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/samantha-birthday-asshole-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/samantha-forced-birthday-mouth-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/samantha-masturbating-her-pussy-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/samantha-naked-massage-fucking-video-ai-po.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/samantha-rubbing-her-pussy-xxx.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/sexy-samantha-nude-big-boobs-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/samantha-naked-threesome-lesbian-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/samantha-ruth-prabhu-hot-giving-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/samantha-ruth-prabhu-posing-her-hot-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/samantha-ruth-prabhu-xxx-nude-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/samantha-sucking-fucking-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/naked-samantha-deepfake-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/naked-samantha-nude-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/nude-samantha-bathroom-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/nude-samantha-hot-fucking-on-bed.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-anal-sex-deepfake-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-deepfake-ass-licking-doggy-style-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-hot-fucking-in-gym-trainer.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-hot-naked-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-naked-in-bathroom-sex-blowjob.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-nude-private-blacked-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-ruth-prabhu-handjob-nude-cock.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-ruth-prabhu-naked-on-bathroom.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-ruth-prabhu-stripped-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/32/samantha-xxx-nude-bathroom-sex-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/kajal-aggarwal-samantha-hot-lesbian-threesome.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/samantha-blacked-naked-gangbang.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/samantha-hot-gangbang-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/33/samantha-naked-body-massage-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/busty-boobs-hot-ass-samantha.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-enjoys-fucking-sai-pallavi-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-hot-ass-fucked-on-bed-fakeapp-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-hot-wet-fucking-in-bathroom.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-naked-dildo-play-fucked-hard.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-naked-fucked-hard-in-her-pussy.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-naked-in-pool-blowjob-boobs-pressing.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-photoshoot-striped-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-striptease-casting-couch-pussy-fingering.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/samantha-tops-removed-boobs-pressed-hot-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/passionate-fuck-samantha-prabhu-xxx-deep-fakes.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/samantha-bikini-striptease-solo-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/samantha-blacked-deepfake-blowjob-ass-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/samantha-hot-fucking-video-on-couch-ai-porn.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/samantha-nude-round-ass-striptease-in-towel.mp4",
+"https://cdn.bollyxxx.net/2022/11/35/samantha-pressing-kajal-aggarwal-boobs-naked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-bikini-tease-posing-her-big-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-doggy-style-nude-sex-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-hot-handjob-to-partner.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-hot-nude-on-bed-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-naked-boobs-hot-handjob-riding-on-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-naked-on-bed-fucked-by-black-dick.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-pussy-fingering-ass-hole-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-removing-partner-cock-handjob-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/samantha-ruth-prabhu-wet-in-bathtub-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/36/sexy-samantha-naked-riding-on-dick-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-fucked-nude-riding-on-dick-on-couch.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-giving-boobjob-fucking.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-naked-pussy-fingering-blowjob-mouth-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-on-couch-stripping-dress-goes-naked-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-ruth-prabhu-pov-nude-sexy-boobs.mp4",
+"https://cdn.bollyxxx.net/2022/11/37/samantha-sucking-dick-nude-pussy-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/samantha-ruth-prabhu-naked-ex-wife-blacked.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/naked-samantha-ruth-prabhu-spreading-leg.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-blowjob-pussy-fuck-cum-on-mouth.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-naked-cock-sucking-blowjob-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-round-ass-hole-fingering-butt.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-audition-live-black.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-blacked-nude-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-handjob-blowjob-deepfake.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-naked-bathroom-masturbating.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-naked-casting-couch.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-naked-small-boobs.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-nude-ass-fucking-anal.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/samantha-ruth-prabhu-nude-ass-fucking.mp4",
+"https://cdn.pornkeen.net/2022/12/14/deepfake-porn-kajal-aggarwal-samantha.mp4",
+"https://cdn.pornkeen.net/2022/12/14/kajal-aggarwal-samantha-nude-deepfakes.mp4",
+"https://cdn.pornkeen.net/2022/12/14/naked-samantha-ruth-prabhu-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/14/samantha-prabhu-xxx-deep-fakes.mp4",
+"https://cdn.pornkeen.net/2022/12/14/samantha-ruth-prabhu-home-sex-scene.mp4",
+"https://cdn.pornkeen.net/2022/12/14/samantha-ruth-prabhu-xxx-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Samantha%2BRuth%2BPrabhu%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Samantha%2BRuth%2BPrabhu%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Samantha%2Bblack%2Cailed%2Band%2Bfucked%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Seduction%2BIn%2BRed%2Bwith%2BCreampie%2B-%2BSamantha%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/16/nude-samantha-passionate-morning-sex.mp4",
+"https://cdn.pornkeen.net/2022/12/17/samantha.mp4",
+"https://cdn.pornkeen.net/2022/12/18/samantha-bj-without-condom-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/18/samantha-ruth-prabhu-deepfake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/samantha-ruth-prabhu-massage.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-bedroom-doggy-ass-licking-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-big-boobs-pressed-ass-hole.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-boobs-nipple-pussy-check-up.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-boobs-pressed-casting.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-sexy-skirt-audition.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-sucking-cock-red.mp4",
+"https://cdn.pornkeen.net/2022/12/19/samantha-ruth-prabhu-webcam-casting-couch.mp4",
+"https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-busty-boobs.mp4",
+"https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-fucking-doctor-naked.mp4",
+"https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-naked-maid-big.mp4",
+"https://cdn.pornkeen.net/2022/12/20/samantha-ruth-prabhu-wet-shower-nipple.mp4",
+"https://cdn.pornkeen.net/2022/12/21/samantha-ruth-prabhu-busty-boobs-black.mp4",
+"https://cdn.pornkeen.net/2022/12/21/samantha-ruth-prabhu-sexy-robo-boobs.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>

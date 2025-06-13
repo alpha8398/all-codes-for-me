@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Side by Side with Pagination</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .pagination span {
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .video-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Videos Side by Side with Pagination</h2>
+
+  <div class="video-container" id="videoContainer"></div>
+
+  <div class="pagination">
+    <button onclick="prevPage()" id="prevBtn">Previous</button>
+    <span id="pageIndicator">Page 1</span>
+    <button onclick="nextPage()" id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const videoUrls = [
+// "https://cdn.pornkeen.net/2022/12/14/Rakul%2BPreet%2BSingh%2Bfucking%2Bwith%2BBF%2B%5B%2BPAID%2BREQUST%2B%5D%2BDeepFake%2BPorn_2.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/rakul-preet-singh-red-lingerie.mp4",
+// "https://cdn.pornkeen.net/2022/12/14/rakul-preet-singh-xxx-fake-porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Rakul%20Preet%20Singh%20hard%20core%20with%20white%20guy%20%7BPAID%20REQUEST%7D%20DeepFake%20Porn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Rakul%2BPreet%2BSingh%2Bsolo%2Bperformance%2B%5B%2BPAID%2BREQUST%2B%5D%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/15/Rakul%2Bpreet%2Bsingh%2Bfucking%2Bwith%2BStepDady%2B%5B%2BPAID%2BREQUST%2B%5D%5D%2BDeepFake%2BPorn.mp4",
+// "https://cdn.pornkeen.net/2022/12/18/rakul-preet-singh-nude-deepfake.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-nude-beach-bj-car.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-pussy-with-a-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-shemale-actress.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-finger-shaved-pussy-doggy.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-juicy-boobs-and-amazing.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-nipple-see-through.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-pussy-with-a-dildo.mp4",
+// "https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-remove-bra-panties.mp4"
+"https://cdn.bollyxxx.net/2022/11/25/rakul-preet-singh-naked-deepfake-gangbang.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/Rakul%20Preet%20Singh%20Giving%20Blowjob%20Hardcore.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/rakul-preet-singh-hardcore-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/rakul-preet-singh-nude-fake-hot-photos.mp4",
+"https://cdn.bollyxxx.net/2022/11/28/rakul-preet-singh-nude-losing-her-virginly.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/rakul-preet-singh-in-red-bikini-dress-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/29/sexy-rakul-preet-singh-red-bikini-anal-sex.mp4",
+"https://cdn.bollyxxx.net/2022/11/30/rakul-preet-singh-stripping-fucking-anal-s.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/rakul-preet-singh-blacked-nude-deepfake.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/rakul-preet-singh-naked-ass-hole.mp4",
+"https://cdn.bollyxxx.net/2022/11/31/rakul-preet-singh-naked-fucked.mp4",
+"https://cdn.bollyxxx.net/2022/11/34/rakul-preet-singh-group-fucking-black-mens-fake.mp4",
+"https://cdn.bollyxxx.net/2022/11/38/rakul-preet-singh-spreading-leg-butt.mp4",
+"https://cdn.bollyxxx.net/2024/01/01/rakul-preet-singh-bikini-striptease-casting.mp4",
+"https://cdn.pornkeen.net/2022/12/14/Rakul%2BPreet%2BSingh%2Bfucking%2Bwith%2BBF%2B%5B%2BPAID%2BREQUST%2B%5D%2BDeepFake%2BPorn_2.mp4",
+"https://cdn.pornkeen.net/2022/12/14/rakul-preet-singh-red-lingerie.mp4",
+"https://cdn.pornkeen.net/2022/12/14/rakul-preet-singh-xxx-fake-porn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Rakul%20Preet%20Singh%20hard%20core%20with%20white%20guy%20%7BPAID%20REQUEST%7D%20DeepFake%20Porn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Rakul%2BPreet%2BSingh%2Bsolo%2Bperformance%2B%5B%2BPAID%2BREQUST%2B%5D%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/15/Rakul%2Bpreet%2Bsingh%2Bfucking%2Bwith%2BStepDady%2B%5B%2BPAID%2BREQUST%2B%5D%5D%2BDeepFake%2BPorn.mp4",
+"https://cdn.pornkeen.net/2022/12/18/rakul-preet-singh-nude-deepfake.mp4",
+"https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-nude-beach-bj-car.mp4",
+"https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-pussy-with-a-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/20/rakul-preet-singh-shemale-actress.mp4",
+"https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-finger-shaved-pussy-doggy.mp4",
+"https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-juicy-boobs-and-amazing.mp4",
+"https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-nipple-see-through.mp4",
+"https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-pussy-with-a-dildo.mp4",
+"https://cdn.pornkeen.net/2022/12/21/rakul-preet-singh-remove-bra-panties.mp4"
+];
+
+
+
+    const videosPerPage = 20;
+    let currentPage = 1;
+    const totalPages = Math.ceil(videoUrls.length / videosPerPage);
+
+    function renderVideos() {
+      const container = document.getElementById("videoContainer");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * videosPerPage;
+      const end = start + videosPerPage;
+
+      videoUrls.slice(start, end).forEach(url => {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = url;
+        container.appendChild(video);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+      }
+    }
+
+    // Initial render
+    renderVideos();
+  </script>
+
+</body>
+</html>
